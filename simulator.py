@@ -42,7 +42,7 @@ class Simulator:
 
     def simulate(self, action):
         next_state = self.state.copy()
-        if self.state[action][0] == 0:
+        if self.state[action] == 0:
             next_state[action][0] = 1  # Activate the selected node
 
             # Perform influence propagation using the IC model

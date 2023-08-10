@@ -14,13 +14,11 @@ class RLTrainer:
   
     def train(self, num_episodes):  
         for episode in range(num_episodes):  
-            state = self.simulator.reset()  
+            state = self.simulator.reset()
             done = False  
             total_reward = 0  
-            print(".")
-            while not done:  
+            while not done:
                 action = self.policy.choose_action(torch.tensor(state, dtype=torch.float32)) 
-                print(action)
                 next_state, reward, done = self.simulator.step(action)  
                 total_reward += reward  
   
@@ -60,3 +58,13 @@ class RLTrainer:
         loss.backward()  
         self.optimizer.step()  
 
+    def evaluation(self):
+        state = self.simulator.reset()
+        done = False   
+        choose_nodes = []
+        while not done:
+            action = self.policy.choose_action(torch.tensor(state, dtype=torch.float32)) 
+            next_state, reward, done = self.simulator.step(action)  
+            choose_nodes.append(action)
+        print("Choose nodes: {}".format(choose_nodes))
+        print("Total influenced {} nodes: {}".format(sum(sum(next_state)), [node for node in range(len(next_state)) if next_state[node][0] == 1]))

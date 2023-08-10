@@ -1,3 +1,4 @@
+import os
 import torch
 from torch import nn
 import torch.optim as optim
@@ -10,7 +11,7 @@ from policy import Policy
 
 
 # Initialize the simulator
-simulator = Simulator("graph_100_nodes.csv", 1)
+simulator = Simulator(os.path.join("graph", "graph_100_nodes.csv"), 1)
 
 input_dim, hidden_dim, output_dim = 1, 64, 1
 q_network = QNetwork(input_dim, hidden_dim, output_dim)  
@@ -20,4 +21,6 @@ optimizer = optim.Adam(q_network.parameters(), lr=0.1)
 criterion = nn.MSELoss()  
 trainer = RLTrainer(policy, simulator, replay_buffer, optimizer, criterion)  
 
-trainer.train(100)
+trainer.train(1000)
+
+trainer.evaluation()
